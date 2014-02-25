@@ -1,25 +1,37 @@
 ## Usage
-Swipe only needs to follow a simple pattern. Here is an example:
+lister.js is a modification of <a href="https://github.com/bradbirdsall/Swipe" alt="_blank">Swipe</a> follows a similar patterns as Swipe. Here is an example:
 
 ``` html
-<div id='slider' class='swipe'>
+<div class='swipe'>
   <div class='swipe-wrap'>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div class="options left fn-reveal">
+        <div class="option"></div>
+        <div class="option"></div>
+    </div>
+    <div class="row"></div>
+    <div class="options right fn-toggle">
+        <div class="option"></div>
+    </div>
   </div>
 </div>
 ```
 
-Above is the initial required structure– a series of elements wrapped in two containers. Place any content you want within the items. The containing div will need to be passed to the Swipe function like so:
+This creates a list item with the option to swipe both left and right to reveal or toggle different functions.
+
+Either .options div can be left out, so it is no problem using just one.
 
 ``` js
-window.mySwipe = Swipe(document.getElementById('slider'));
+To initiate the swipable list items:
+
+var swipes = []
+$('.swipe').each(function(i, obj) {
+    swipes[i] = new Swipe(obj, {
+        startSlide: 1
+    });
+});
 ```
 
-I always place this at the bottom of the page, externally, to verify the page is ready.
-
-Also Swipe needs just a few styles added to your stylesheet:
+These styles are necessary for the swiping to work so make sureto add these to your stylesheet:
 
 ``` css
 .swipe {
@@ -40,23 +52,19 @@ Also Swipe needs just a few styles added to your stylesheet:
 
 ## Config Options
 
-Swipe can take an optional second parameter– an object of key/value settings:
+To define what an .options div should behave like there are two classes that you can add to the .options classes:
 
-- **startSlide** Integer *(default:0)* - index position Swipe should start at
+- fn-toggle
+- fn-reveal
 
--	**speed** Integer *(default:300)* - speed of prev and next transitions in milliseconds.
+lister.js uses these class names to identify what to do with them.
 
-- **auto** Integer - begin with auto slideshow (time in milliseconds between slides)
+Exmaples:
 
-- **continuous** Boolean *(default:true)* - create an infinite feel with no endpoints
+<div class="options left fn-reveal">...</div>
+<div class="options left fn-toggle">...</div>
 
-- **disableScroll** Boolean *(default:false)* - stop any touches on this container from scrolling the page
 
-- **stopPropagation** Boolean *(default:false)* - stop event propagation
- 
--	**callback** Function - runs at slide change.
-
-- **transitionEnd** Function - runs at the end slide transition.
 
 ### Example
 
@@ -75,32 +83,14 @@ window.mySwipe = new Swipe(document.getElementById('slider'), {
 
 ```
 
-## Swipe API
-
-Swipe exposes a few functions that can be useful for script control of your slider.
-
-`prev()` slide to prev
-
-`next()` slide to next
-
-`getPos()` returns current slide index position
-
-`getNumSlides()` returns the total amount of slides
-
-`slide(index, duration)` slide to set index position (duration: speed of transition in milliseconds)
 
 ## Browser Support
-Swipe is now compatible with all browsers, including IE7+. Swipe works best on devices that support CSS transforms and touch, but can be used without these as well. A few helper methods determine touch and CSS transition support and choose the proper animation methods accordingly.
+lister.js is an early stage, I have developed and tested it using WebKit based browsers and I cannot give any comments regarding Firefox support.
 
-## Who's using Swipe
-<img src='http://swipejs.com/assets/swipe-cnn.png' width='170'>
-<img src='http://swipejs.com/assets/swipe-airbnb.png' width='170'>
-<img src='http://swipejs.com/assets/swipe-nhl.png' width='170'>
-<img src='http://swipejs.com/assets/swipe-htc.png' width='170'>
-<img src='http://swipejs.com/assets/swipe-thinkgeek.png' width='170'>
-<img src='http://swipejs.com/assets/swipe-snapguide.png' width='170'>
 
-Shoot me a [note](mailto:brad@birdsall.co) if you want your logo here
+## Thanks to Brad for making Swipe! The best swiping framework I have come across.
+
+Be sure to check out his work <a href="https://github.com/bradbirdsall/" target="_blank">here</a>.
 
 ## License
-Copyright (c) 2013 Brad Birdsall Licensed under the [The MIT License (MIT)](http://opensource.org/licenses/MIT).
+Licensed under the [The MIT License (MIT)](http://opensource.org/licenses/MIT).
