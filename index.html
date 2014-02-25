@@ -1,0 +1,116 @@
+<!DOCTYPE HTML> 
+<html>
+<head>
+<title>Swipe 2</title>
+<meta http-equiv="X-UA-Compatible" content="IE=8">
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0'/> 
+<link href='style.css' rel='stylesheet'/>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:300,400,600' rel='stylesheet' type='text/css'>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<style>
+
+/* Swipe 2 required styles */
+
+.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+}
+.swipe-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.swipe-wrap > div {
+  float:left;
+  position: relative;
+}
+
+/* END required styles */
+
+</style>
+
+</head>
+<body>
+
+<header>
+  <h1>iOS-like swiping in the browser.</h2>
+</header>
+
+<section class="color-1">
+    <h2>Swipe both right and left.</h2>
+    <div style='margin:0 auto' class='swipe'>
+      <div class='swipe-wrap' style="width: 480px;">
+        <div class="options left fn-reveal">
+            <div class="option decrement">-</div>
+            <div class="option increment">+</div>
+        </div>
+        <div class="row">
+          <button>1</button>
+          <h3>Oreo's Family Pack 500g</h3>
+          <h3 class="price">47kr</h3>
+        </div>
+        <div class="options right fn-toggle">
+            <div class="option delete"></div>
+        </div>
+      </div>
+    </div>
+</section>
+<section class="color-2">
+    <h2>Swipe left to complete.</h2>
+    <div style='margin:0 auto' class='swipe'>
+      <div class='swipe-wrap' style="width: 480px;">
+        <div class="row">
+          <button>2</button>
+          <h3>Reese's Peanut Butter cups</h3>
+          <h3 class="price">58kr</h3>
+        </div>
+        <div class="options right fn-toggle">
+            <div class="option delete"></div>
+        </div>
+      </div>
+    </div>
+</section>
+<section class="color-3">
+    <h2>Or swipe right to complete.</h2>
+    <div style='margin:0 auto' class='swipe'>
+      <div class='swipe-wrap' style="width: 480px;">
+        <div class="options right fn-toggle">
+            <div class="option delete"></div>
+        </div>
+        <div class="row">
+          <button>2</button>
+          <h3>Reese's Peanut Butter cups</h3>
+          <h3 class="price">58kr</h3>
+        </div>
+      </div>
+    </div>
+</section>
+
+<script src="app.js"></script>
+<script src='swipe.js'></script>
+<script>
+
+var swipes = []
+$('.swipe').each(function(i, obj) {
+    swipes[i] = new Swipe(obj, {
+        startSlide: 1
+    });
+});
+
+
+// pure JS
+//var elem = document.getElementById('mySwipe');
+//window.mySwipe = Swipe(elem, {
+  // startSlide: 4,
+  // auto: 3000,
+  // continuous: false,
+  // disableScroll: true,
+  // stopPropagation: true,
+  // callback: function(index, element) {},
+  // transitionEnd: function(index, element) {}
+//});
+
+// with jQuery
+// window.mySwipe = $('#mySwipe').Swipe().data('Swipe');
+
+</script>
