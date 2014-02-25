@@ -59,29 +59,11 @@ To define what an .options div should behave like there are two classes that you
 
 lister.js uses these class names to identify what to do with them.
 
-Exmaples:
+Examples:
 
-<div class="options left fn-reveal">...</div>
-<div class="options left fn-toggle">...</div>
+<div class="options left fn-reveal">Divs containing your option buttons</div>
+<div class="options left fn-toggle">Div indicating the toggle state</div>
 
-
-
-### Example
-
-``` js
-
-window.mySwipe = new Swipe(document.getElementById('slider'), {
-  startSlide: 2,
-  speed: 400,
-  auto: 3000,
-  continuous: true,
-  disableScroll: false,
-  stopPropagation: false,
-  callback: function(index, elem) {},
-  transitionEnd: function(index, elem) {}
-});
-
-```
 
 
 ## Browser Support
