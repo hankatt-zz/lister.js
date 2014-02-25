@@ -1,5 +1,5 @@
 ## Usage
-lister.js is a modification of <a href="https://github.com/bradbirdsall/Swipe" alt="_blank">Swipe</a> follows a similar patterns as Swipe. Here is an example:
+lister.js is a modification of <a href="https://github.com/bradbirdsall/Swipe" alt="_blank">Swipe</a> and follows a similar pattern to initiate items. Here is an example:
 
 ``` html
 <div class='swipe'>
