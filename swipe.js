@@ -76,12 +76,6 @@ function Swipe(container, options) {
 
   }
 
-  function circle(index) {
-    // a simple positive modulo using slides.length
-    return (slides.length + (index % slides.length)) % slides.length;
-
-  }
-
   function move(index, dist, speed) {
     // index = item we're viewing, dist = initiated translation distance (used for resets)
     translate(index, dist, speed);
