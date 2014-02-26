@@ -152,11 +152,6 @@ function Swipe(container, options) {
         case 'touchstart': this.start(event); break;
         case 'touchmove': this.move(event); break;
         case 'touchend': offloadFn(this.end(event)); break;
-        case 'webkitTransitionEnd':
-        case 'msTransitionEnd':
-        case 'oTransitionEnd':
-        case 'otransitionend':
-        case 'transitionend': offloadFn(this.transitionEnd(event)); break;
         case 'resize': offloadFn(setup); break;
       }
 
@@ -349,15 +344,6 @@ function Swipe(container, options) {
       element.removeEventListener('touchend', events, false)
 
     },
-    transitionEnd: function(event) {
-
-      if (parseInt(event.target.getAttribute('data-index'), 10) == index) {
-
-        options.transitionEnd && options.transitionEnd.call(event, index, slides[index]);
-
-      }
-
-    }
 
   }
 
@@ -368,85 +354,13 @@ function Swipe(container, options) {
   if (browser.addEventListener) {
 
     // set touchstart event on element
-
     if (browser.touch) element.addEventListener('touchstart', events, false);
-
-    if (browser.transitions) {
-      element.addEventListener('webkitTransitionEnd', events, false);
-      element.addEventListener('msTransitionEnd', events, false);
-      element.addEventListener('oTransitionEnd', events, false);
-      element.addEventListener('otransitionend', events, false);
-      element.addEventListener('transitionend', events, false);
-    }
 
     // set resize event on window
     window.addEventListener('resize', events, false);
 
   } else {
-
     window.onresize = function () { setup() }; // to play nice with old IE
-
-  }
-
-  // expose the Swipe API
-  return {
-    setup: function() {
-
-      setup();
-
-    },
-    getPos: function() {
-
-      // return current index position
-      return index;
-
-    },
-    getNumSlides: function() {
-
-      // return total number of slides
-      return length;
-    },
-    kill: function() {
-
-      // cancel slideshow
-      stop();
-
-      // reset element
-      element.style.width = '';
-      element.style.left = '';
-
-      // reset slides
-      var pos = slides.length;
-      while(pos--) {
-
-        var slide = slides[pos];
-        slide.style.width = '';
-        slide.style.left = '';
-
-        if (browser.transitions) translate(pos, 0, 0);
-
-      }
-
-      // removed event listeners
-      if (browser.addEventListener) {
-
-        // remove current event listeners
-        element.removeEventListener('touchstart', events, false);
-        element.removeEventListener('webkitTransitionEnd', events, false);
-        element.removeEventListener('msTransitionEnd', events, false);
-        element.removeEventListener('oTransitionEnd', events, false);
-        element.removeEventListener('otransitionend', events, false);
-        element.removeEventListener('transitionend', events, false);
-        window.removeEventListener('resize', events, false);
-
-      }
-      else {
-
-        window.onresize = null;
-
-      }
-
-    }
   }
 
 }
