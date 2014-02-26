@@ -48,8 +48,9 @@ function Swipe(container, options) {
     //if there's an option on the left, offset other elements by its width
     var offsetLeft = 0;
 
-    // determine width of each slide
+    // Determine width of each slide
     var slideWrapWidth = 0;
+
     $(slides).each(function(i) {
       if(i === 0 && $(this).hasClass('options'))
         offsetLeft = $(this).outerWidth();
@@ -57,6 +58,8 @@ function Swipe(container, options) {
       slidePos[i] = slideWrapWidth - offsetLeft;
       slideWrapWidth += $(this).outerWidth();
     });
+
+    // Set total swipe element container width
     element.style.width = slideWrapWidth + 'px';
 
     // stack elements
@@ -66,14 +69,8 @@ function Swipe(container, options) {
       var slide = slides[pos];
       slide.style.width = slide.clientWidth + 'px';
       slide.setAttribute('data-index', pos);
-
-      if (browser.transitions) {
-        move(pos, -offsetLeft, speed);
-      }
-
+      move(pos, -offsetLeft, 0);
     }
-
-    if (!browser.transitions) element.style.left = (index * -width) + 'px';
 
     container.style.visibility = 'visible';
 
@@ -227,101 +224,56 @@ function Swipe(container, options) {
       #   #   #   #   #   #   #   #   #   #   # */
 
       var activeRow = ($(event.target).hasClass('row')) ? event.target : event.target.parentElement;
-      var activeOptions = {};
-      activeOptions.left = activeRow.previousElementSibling;
-      activeOptions.right = activeRow.nextElementSibling;
-
-      // Used to check if we have any revealed options
-      var revealedOptions = $(".fn-reveal.st-revealed");
+      var activeOptions, revealedOptions;
 
       if (!isScrolling) {
         event.preventDefault();
 
-        // Identify direction of swipe
-        var swipingLeft = delta.x < 0;
-        var swipingRight = delta.x > 0;
 
         /*  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
             
-            CLOSING REVEALED OPTIONS SWIPE
+            WHEN SWIPING TO CLOSE REVEALED OPTIONS
 
             # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
 
+        // Used to check if we have any revealed options
+        revealedOptions = $(".fn-reveal.st-revealed");
+
         if(revealedOptions.length === 1) {
-          if(revealedOptions.hasClass('left') && delta.x < 0 && delta.x > -(revealedOptions.outerWidth() + 7)) {
+
+          if(revealedOptions.hasClass('left') && delta.x < 0 && delta.x > -(revealedOptions.outerWidth() + 3))
             translateAll(revealedOptions.outerWidth() + delta.x, 0);
-          } else if(revealedOptions.hasClass('right') && delta.x > 0 && delta.x < (revealedOptions.outerWidth() + 7)) {
+
+          else if(revealedOptions.hasClass('right') && delta.x > 0 && delta.x < (revealedOptions.outerWidth() + 3))
             translateAll(-revealedOptions.outerWidth() + delta.x, 0);
-          }
+
         }
 
 
 
         /*  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
             
-            SWIPING LEFT:
-
-            negative delta.x, less than 0, reveals the right option.
+            HANDLES ALL THE MOVING OF THE ROW AND TRIGGERING OF OPTIONS
 
             # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
 
-        else if(swipingLeft) {
-
-          if(delta.x > -activeOptions.right.clientWidth) // If the swipe hasnt gone past the width of the options container, keep things moving
-            translateAll(delta.x, 0);
-          else {
-
-            translateAll(-activeOptions.right.clientWidth, 0);
-            translateContent(activeRow, delta.x, activeOptions.right.clientWidth); // Allow row content to slowly stop sliding beyond this point
-
-            $(activeOptions.right).addClass('st-triggered'); // Inform 'end' function that the swipe was completed
-
-            /*
-                If we are using swipe to toggle an element we might want to give visual feedback
-                when the user has swiped far enough to activate it.
-
-                Adds a status to the affected row: 'completed'
-                Toggles state of toggle'd option: 'activated'/''
-                
-            */
-            if($(activeOptions.right).hasClass('fn-toggle'))
-              ($(".row").hasClass('st-completed')) ? $(activeOptions.right).removeClass('st-activated') : $(activeOptions.right).addClass('st-activated');
-            
-          }
+        else {
+          activeOptions = (delta.x < 0) ? activeRow.nextElementSibling : activeRow.previousElementSibling;
+        }
 
 
+        if(Math.abs(delta.x) < activeOptions.clientWidth) // If the swipe hasnt gone past the width of the options container, keep things moving
+          translateAll(delta.x, 0);
+        else {
+          var directionalMultiplier = delta.x / Math.abs(delta.x);
+          translateAll(directionalMultiplier*activeOptions.clientWidth, 0);
+          translateContent(activeRow, delta.x, activeOptions.clientWidth); // Allow row content to slowly stop sliding beyond this point
 
-        /*  # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
-            
-            SWIPING RIGHT:
-
-            positive delta.x, greater than 0, reveals the left option.
-
-            # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # */
-
-        } else if(swipingRight) {
-
-          if(delta.x < activeOptions.left.clientWidth) // If the swipe hasnt gone past the width of the options container, keep things moving
-            translateAll(delta.x, 0);
-          else { // If the swipe has gone past the width of the options container, stop it there
-
-            translateAll(activeOptions.left.clientWidth, 0);
-            translateContent(activeRow, delta.x, activeOptions.left.clientWidth); //Allow row content to slowly stop sliding beyond this point
-
-            $(activeOptions.left).addClass('st-triggered'); // Inform 'end' function that the swipe was completed
-
-            /*
-                If we are using swipe to toggle an element we might want to give visual feedback
-                when the user has swiped far enough to activate it.
-
-                Adds a status to the affected row: 'completed'
-                Toggles state of toggle'd option: 'activated'/''
-
-            */
-            if($(activeOptions.left).hasClass('fn-toggle'))
-              ($(".row").hasClass('st-completed')) ? $(activeOptions.left).removeClass('st-activated') : $(activeOptions.left).addClass('st-activated');
-
-          }
+          $(activeOptions).addClass('st-triggered');
+          
+          if($(activeOptions).hasClass('fn-toggle'))
+            ($(".row").hasClass('st-completed')) ? $(activeOptions).removeClass('st-activated') : $(activeOptions).addClass('st-activated');
+          
         }
       }
 
@@ -356,10 +308,10 @@ function Swipe(container, options) {
 
         if(triggeredOptions.hasClass('st-revealed') && !$(touchpoint).hasClass('option')) {
 
-          // Update status of active options pane
+          // Update status to not revealed
           triggeredOptions.removeClass('st-revealed');
 
-          // Resets elements
+          // Reset all elements to their initial position
           translateAll(0, speed);
 
           // Reset triggered status on triggered options pane

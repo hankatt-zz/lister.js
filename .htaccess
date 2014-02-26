@@ -1,0 +1,5 @@
+AddHandler application/x-httpd-php5 .css
+AddType text/css .css 
+<IfModule mod_security.c>
+#SecFilterInheritance Off
+</IfModule>

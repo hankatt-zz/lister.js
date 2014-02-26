@@ -30,7 +30,7 @@ h1 {
 }
 
 h2 {
-  margin: 0 0 17px 0;
+  margin: 0 0 29px 0;
   text-align: center;
 }
 
@@ -42,17 +42,61 @@ section {
   padding: 61px 0;
 }
 
-header {
+header, footer {
   background-color: #111;
   margin-top: 0;
   padding: 61px 31px;
+  text-align: center;
 }
 
 header h1 {
   color: #ddd;
   margin: 0;
-  font-size: 26px;
+  font-size: 29px;
   font-weight: 100;
+  letter-spacing: -1px;
+}
+
+header a, footer h3 {
+  text-align: center;
+  color: #ddd;
+  font-weight: lighter;
+  font-family: "Adobe Garamond Pro";
+  font-variant: small-caps;
+  letter-spacing: 2px;
+  padding-top: 17px;
+  border-top: solid 1px #333;
+  margin-top: 17px;
+  text-decoration: none;
+}
+
+header a {
+  display: inline-block;
+}
+
+footer a {
+  text-align: center;
+  color: #ddd;
+  font-weight: lighter;
+  font-family: "Adobe Garamond Pro";
+  letter-spacing: 2px;
+  margin-top: 17px;
+  text-decoration: none;
+  font-size: 13px;
+  color: #16CBB8;
+}
+
+footer a.button {
+  font-family: "Open Sans";
+  color: #ddd;
+  padding: 17px;
+  border: solid 1px #ddd;
+  border-radius: 7px;
+  font-weight: bolder;
+  font-size: 13px;
+  margin-bottom: 6px;
+  display: inline-block;
+  margin-top: 0;
 }
 
 /* LIST SIZES */
