@@ -69,8 +69,14 @@ Examples:
 ## Browser Support
 lister.js is an early stage, I have developed and tested it using WebKit based browsers and I cannot give any comments regarding Firefox support.
 
+## To-be-done
 
-## Thanks to Brad for making Swipe! The best swiping framework I have come across.
+- Trigger custom jQuery event 'onToggle' to allow users to implement their functions outside of the swipe.js file.
+- Clean up in the swipe.js code and more specifically optimize the setup function
+
+
+## Thank Brad for making Swipe.js!
+Swipe.js was what inspired this, seeing how smooth that script handled swiping between slides made me see the possibility to create iOS-like swiping in lists.
 
 Be sure to check out his work <a href="https://github.com/bradbirdsall/" target="_blank">here</a>.
 
