@@ -83,7 +83,6 @@ lister.js is an early stage, I have developed and tested it using WebKit based b
 
 ## To-be-done
 
-- Trigger custom jQuery event 'onToggle' to allow users to implement their functions outside of the swipe.js file.
 - Clean up in the swipe.js code and more specifically optimize the setup function
 
 
