@@ -122,19 +122,21 @@ function Swipe(container, options) {
 
     */
 
-    // Returns 1 or -1 depending on direction of delta (1 => Left to right swipe)
     if(delta !== 0) {
-      var directionalMultiplier = delta / Math.abs(delta);
+      var directionalMultiplier = delta / Math.abs(delta); // Returns 1 or -1 depending on direction of delta (1 => Left to right swipe)
       var actualTranslateDistance = (delta*directionalMultiplier) - optionswidth;
 
       actualTranslateDistance = actualTranslateDistance * ((width - actualTranslateDistance) / (3*width) * directionalMultiplier);
-    } else {
+    } else
       actualTranslateDistance = 0;
-    }
 
+    // Make sure that the content transitions back slowly on release, else follow swipe movement without delay
     if(delta === 0)
       $(row).children().css('-webkit-transition', '-webkit-transform 0.2s');
+    else
+      $(row).children().css('-webkit-transition', '-webkit-transform 0s');
 
+    // Do the actual translation of the content
     $(row).children().css('-webkit-transform', 'translate(' +(actualTranslateDistance) +'px, 0) translateZ(0)');
   }
 
@@ -250,18 +252,25 @@ function Swipe(container, options) {
           activeOptions = (delta.x < 0) ? activeRow.nextElementSibling : activeRow.previousElementSibling;
         }
 
-
-        if(Math.abs(delta.x) < activeOptions.clientWidth) // If the swipe hasnt gone past the width of the options container, keep things moving
+        // If the swipe hasnt gone past the width of the options container, keep things moving
+        if(Math.abs(delta.x) < activeOptions.clientWidth)
           translateAll(delta.x, 0);
         else {
-          var directionalMultiplier = delta.x / Math.abs(delta.x);
-          translateAll(directionalMultiplier*activeOptions.clientWidth, 0);
-          translateContent(activeRow, delta.x, activeOptions.clientWidth); // Allow row content to slowly stop sliding beyond this point
+          if($(activeOptions).hasClass('st-triggered'))
+            translateContent(activeRow, delta.x, activeOptions.clientWidth); // Allow row content to slowly stop sliding beyond this point
 
-          $(activeOptions).addClass('st-triggered');
-          
-          if($(activeOptions).hasClass('fn-toggle'))
-            ($(".row").hasClass('st-completed')) ? $(activeOptions).removeClass('st-activated') : $(activeOptions).addClass('st-activated');
+          // This is the triggering swipe, options have not been triggered
+          else {
+
+            // Translate elements to make sure options are fully revealed
+            translateAll(delta.x / Math.abs(delta.x) * activeOptions.clientWidth, 0);
+
+            // Update status to triggered
+            $(activeOptions).addClass('st-triggered');
+
+            if($(activeOptions).hasClass('fn-toggle'))
+              $(activeOptions).trigger('toggle'); // Trigger a 'swipe-toggle' event for the user to customize what should happen when activated
+          }
           
         }
       }
@@ -287,28 +296,27 @@ function Swipe(container, options) {
         translateAll(0, speed); // Resets position of elements
         translateContent(activeRow, 0, false); // Resets position of content to initial position
 
-        // Toggle row status
-        activeRow.toggleClass('st-completed');
-
         // Reset triggered status on triggered options pane
-        $(".options.st-triggered").removeClass('st-triggered');
+        triggeredOptions.removeClass('st-triggered');
+
+        // Trigger event 'toggleend'
+        triggeredOptions.trigger('toggleend');
 
       } else if(triggeredOptions.hasClass('fn-reveal')) {
 
         if(triggeredOptions.hasClass('st-revealed') && !$(touchpoint).hasClass('option')) {
 
-          // Update status to not revealed
-          triggeredOptions.removeClass('st-revealed');
-
           // Reset all elements to their initial position
           translateAll(0, speed);
 
-          // Reset triggered status on triggered options pane
-          $(".options.st-triggered").removeClass('st-triggered');
+          // Update status to not revealed
+          triggeredOptions.removeClass('st-revealed');
 
-        } else {
+          // Reset triggered status on triggered options pane
+          triggeredOptions.removeClass('st-triggered');
+
+        } else
           triggeredOptions.addClass('st-revealed');
-        }
       }
 
       // Resets content in row to initial position

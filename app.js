@@ -21,4 +21,18 @@ $(document).ready(function() {
 		valueButton.html(newValue);
 	});
 
+	// Triggered during a swipe on a row with the .fn-toggle class
+	$(".options").on('toggle', function() {
+
+		// For example you can toggle a class that visually confirms that the toggle function has triggered
+    	$(this).toggleClass('st-activated');
+	});
+
+	// Triggered after a swipe has ended on a row with the .fn-toggle class
+	$(".options").on('toggleend', function() {
+
+		// Triggered when a swipe has ended and the toggle function has triggered
+		$(this).siblings('.row').toggleClass('st-completed');
+	});
+
 });
