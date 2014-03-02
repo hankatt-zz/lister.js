@@ -65,6 +65,18 @@ Examples:
 <div class="options left fn-toggle">Div indicating the toggle state</div>
 
 
+## Events
+
+lister.js triggers two events when using the toggle function: 
+
+- 'toggle'
+- 'toggleend'
+
+'toggle' trigger when the user has swiped far enough to completely reveal the options. 
+This can for example be used to add a class to the toggle option, which for example could be used for visual feedback to indicate that it has been activated.
+
+'toggleend' triggers when the users has let go and the swipe has ended.
+This can for example be used to change the state of the row that has been toggled and run other functions you want to run when a row has been toggled.
 
 ## Browser Support
 lister.js is an early stage, I have developed and tested it using WebKit based browsers and I cannot give any comments regarding Firefox support.
