@@ -1,8 +1,8 @@
 /*
- * Swipe 2.0
+ * lister.js 0.1a
  *
- * Brad Birdsall
- * Copyright 2013, MIT License
+ * Henrik Wiberg
+ * Copyright 2014, MIT License
  *
 */
 
